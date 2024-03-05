@@ -687,6 +687,8 @@ if !exists("skip_sh_syntax_inits")
  hi def link shDerefOp	shOperator
  hi def link shDerefPOL	shDerefOp
  hi def link shDerefPPS	shDerefOp
+ hi def link shDerefPPSleft	shString
+ hi def link shDerefPPSright	shString
  hi def link shDeref	shShellVariables
  hi def link shDerefDelim	shOperator
  hi def link shDerefSimple	shDeref
