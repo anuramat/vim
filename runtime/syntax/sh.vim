@@ -600,7 +600,7 @@ if exists("b:is_bash")
  " bash : ${parameter/%pattern/string}
  " bash : ${parameter/%pattern}
  syn match  shDerefPPS	contained	'/[#%/]\?'	nextgroup=shDerefPPSleft
- syn region shDerefPPSleft	contained	start='.'	skip=@\%(\\\\\)*\\/@ matchgroup=shDerefOp	end='/' end='\ze}' end='"'	nextgroup=shDerefPPSright	contains=@shPPSLeftList
+ syn region shDerefPPSleft	contained	start='.'	skip=@\%(\\\\\)*\\/@ matchgroup=shDerefOp	end='/' end='}'	nextgroup=shDerefPPSright	contains=@shPPSLeftList
  syn region shDerefPPSright	contained	start='.'	skip=@\%(\\\\\)\+@		end='\ze}'				contains=@shPPSRightList
 endif
 
