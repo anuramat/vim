@@ -146,7 +146,7 @@ syn cluster shCommandSubList	contains=shAlias,shArithmetic,shCmdParenRegion,shCo
 syn cluster shCurlyList	contains=shNumber,shComma,shDeref,shDerefSimple,shDerefSpecial
 " COMBAK: removing shEscape from shDblQuoteList fails ksh04:43 -- Jun 09, 2022: I don't see the problem with ksh04, so am reinstating shEscape
 syn cluster shDblQuoteList	contains=shArithmetic,shCommandSub,shCommandSubBQ,shSubshare,shValsub,shDeref,shDerefSimple,shEscape,shPosnParm,shCtrlSeq,shSpecial,shSpecialDQ
-syn cluster shDerefList	contains=shDeref,shDerefSimple,shDerefVar,shDerefSpecial,shDerefWordError,shDerefPSR,shDerefPPS
+syn cluster shDerefList	contains=shDeref,shDerefSimple,shDerefVar,shDerefSpecial,shDerefWordError,shDerefPPS
 syn cluster shDerefVarList	contains=shDerefOffset,shDerefOp,shDerefVarArray,shDerefOpError
 syn cluster shEchoList	contains=shArithmetic,shCommandSub,shCommandSubBQ,shSubshare,shValsub,shDeref,shDerefSimple,shEscape,shExSingleQuote,shExDoubleQuote,shSingleQuote,shDoubleQuote,shCtrlSeq,shEchoQuote
 syn cluster shExprList1	contains=shCharClass,shNumber,shOperator,shExSingleQuote,shExDoubleQuote,shSingleQuote,shDoubleQuote,shExpr,shDblBrace,shDeref,shDerefSimple,shCtrlSeq
@@ -591,16 +591,17 @@ if exists("b:is_bash") || exists("b:is_kornshell") || exists("b:is_posix")
 endif
 
 if exists("b:is_bash")
+ " bash : ${parameter/pattern/string}
+ " bash : ${parameter/pattern}
  " bash : ${parameter//pattern/string}
  " bash : ${parameter//pattern}
- syn match  shDerefPPS	contained	'/\{1,2}'	nextgroup=shDerefPPSleft
+ " bash : ${parameter/#pattern/string}
+ " bash : ${parameter/#pattern}
+ " bash : ${parameter/%pattern/string}
+ " bash : ${parameter/%pattern}
+ syn match  shDerefPPS	contained	'/[#%/]\?'	nextgroup=shDerefPPSleft
  syn region shDerefPPSleft	contained	start='.'	skip=@\%(\\\\\)*\\/@ matchgroup=shDerefOp	end='/' end='\ze}' end='"'	nextgroup=shDerefPPSright	contains=@shPPSLeftList
  syn region shDerefPPSright	contained	start='.'	skip=@\%(\\\\\)\+@		end='\ze}'				contains=@shPPSRightList
-
- " bash : ${parameter/#substring/replacement}
- syn match  shDerefPSR	contained	'/#'	nextgroup=shDerefPSRleft,shDoubleQuote,shSingleQuote
- syn region shDerefPSRleft	contained	start='[^"']'	skip=@\%(\\\\\)*\\/@ matchgroup=shDerefOp	end='/' end='\ze}'	nextgroup=shDerefPSRright
- syn region shDerefPSRright	contained	start='.'	skip=@\%(\\\\\)\+@		end='\ze}'
 endif
 
 " Arithmetic Parenthesized Expressions: {{{1
@@ -686,7 +687,6 @@ if !exists("skip_sh_syntax_inits")
  hi def link shDerefOp	shOperator
  hi def link shDerefPOL	shDerefOp
  hi def link shDerefPPS	shDerefOp
- hi def link shDerefPSR	shDerefOp
  hi def link shDeref	shShellVariables
  hi def link shDerefDelim	shOperator
  hi def link shDerefSimple	shDeref
